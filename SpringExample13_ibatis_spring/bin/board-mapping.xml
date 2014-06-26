@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Board">
+	<typeAlias alias="board" type="com.multicampus.biz.board.vo.BoardVO" />
+
+	<resultMap id="boardResult" class="board">
+		<result property="seq" column="SEQ" />
+		<result property="title" column="TITLE" />
+		<result property="writer" column="WRITER" />
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REGDATE" />
+		<result property="cnt" column="CNT" />
+	</resultMap>
+
+	<insert id="addBoard" parameterClass="board">
+		INSERT INTO BOARD(SEQ,
+		TITLE, WRITER, CONTENT)
+		VALUES((SELECT NVL(MAX(SEQ), 0)+1 FROM BOARD),
+		#title#, #writer#, #content#)
+	</insert>
+
+	<select id="getBoardList" resultMap="boardResult">
+		SELECT * FROM BOARD
+		ORDER BY SEQ DESC
+	</select>
+</sqlMap>
+
